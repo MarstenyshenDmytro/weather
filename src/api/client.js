@@ -1,16 +1,25 @@
 import axios from "axios";
 import CryptoJS from "crypto-js";
-import { API_URL } from "../app.constans";
+import { API_URL, GEOLOCATION } from "../app.constans";
+
+function convertToString(obj) {
+  let string = "";
+  for (let key in obj) {
+    string += `${key}=${obj[key]}&`;
+  }
+  string = string.slice(0, string.length - 1);
+  return string;
+}
 
 //OAUTH
 let url = API_URL;
 let method = "GET";
-let app_id = "RJWrrR4i";
+let app_id = "jwqlaF32";
 let consumer_key =
-  "dj0yJmk9SmhpSDF5eWR3eEpMJmQ9WVdrOVVrcFhjbkpTTkdrbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PTc4";
-let consumer_secret = "2fea493186132c0c6a51b1c9504d5713e561139d";
+  "dj0yJmk9dlZJRzl6Um9qU2E4JmQ9WVdrOWFuZHhiR0ZHTXpJbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PWZm";
+let consumer_secret = "f8060887a395162467f0b25aa56aec8bf8abd923";
 let concat = "&";
-let query = { location: "sunnyvale,ca", format: "json" };
+let query = { location: GEOLOCATION, format: "json", u: "c" };
 let oauth = {
   oauth_consumer_key: consumer_key,
   oauth_nonce: Math.random()
@@ -20,8 +29,10 @@ let oauth = {
   oauth_timestamp: parseInt(new Date().getTime() / 1000).toString(),
   oauth_version: "1.0"
 };
-let merged = {};
+
+let merged = Object.assign({}, query, oauth);
 //$.extend(merged, query, oauth);
+
 // Note the sorting here is required
 let merged_arr = Object.keys(merged)
   .sort()
@@ -50,15 +61,16 @@ let auth_header =
 //OAUTH END
 
 const client = ({ headers, ...rest } = {}) => {
+  console.log("QQ");
   // const res = axios.get(`${API_URL}${url}`)
   return axios({
-    method: "get",
-    url: `${url}`,
+    url: `${url}?${convertToString(query)}`,
     headers: {
       Authorization: auth_header,
       "X-Yahoo-App-Id": app_id
-    }
-  }).then(r => r);
+    },
+    method: "get"
+  }).then(r => r.data);
 };
 
 export default client;
