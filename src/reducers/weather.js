@@ -7,14 +7,16 @@ import {
 const initialState = {
   loading: false,
   error: null,
-  data: []
+  data: [],
+  position: null
 };
 
 function getWeather(state = initialState, action) {
   switch (action.type) {
     case REQUEST_WEATHER:
       return Object.assign({}, state, {
-        loading: true
+        loading: true,
+        position: action.meta
       });
     case SUCCESS_WEATHER:
       return Object.assign({}, state, {

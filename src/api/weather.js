@@ -1,5 +1,5 @@
 import client from "./client";
 
-const getWeatherAPI = () => client();
+const getWeatherAPI = location => client(location);
 
 export { getWeatherAPI };

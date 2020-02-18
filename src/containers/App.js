@@ -1,18 +1,19 @@
 import React, { useEffect, useState, Component } from "react";
-import Weather from "../components/TestApi";
 import { requestWeather } from "../actions/users";
 import { connect } from "react-redux";
-import WeatherInfo from "../components/WeatherInfo";
-import Location from "../components/Location";
-import { GEOLOCATION } from "../app.constans";
+import WeatherInfo from "../components/weatherInfo/WeatherInfo";
+import Location from "../components/location/Location";
+import "./app.scss";
+
 // const App = props => {
 //   const { loading, error, data } = props.weather;
-//   const [isLoading, setIsLoading] = useState(loading);
+//   //const [isLoading, setIsLoading] = useState(loading);
 //   const { requestWeather } = props;
 //   useEffect(() => {
 //     //requestWeather();
+//     //console.log(loading);
 //     //setIsLoading(false);
-//   });
+//   }, [data]);
 //   console.log(props);
 //   return (
 //     <div>
@@ -24,20 +25,41 @@ import { GEOLOCATION } from "../app.constans";
 
 class App extends Component {
   componentDidMount() {
+    this.getLocation();
+  }
+
+  getLocation() {
     const { requestWeather } = this.props;
-    requestWeather();
+    if (!navigator.geolocation) {
+      return "Geolocation is not supported by Your browser";
+    } else {
+      navigator.geolocation.getCurrentPosition(requestWeather, () =>
+        console.log("error")
+      );
+    }
   }
 
   render() {
     const { loading } = this.props.weather;
-    console.log(this.props.weather.data.current_observation);
-    console.log(this.props.weather.data.forecasts);
+    const { forecasts } = this.props.weather.data;
+    const { location } = this.props.weather.data;
+    // console.log(this.props.weather.data.current_observation);
+    //console.log(this.props.weather.data);
+    //console.log(typeof forecasts);
     return loading ? (
       <p>Loading...</p>
     ) : (
       <div>
-        <Weather data={this.props} />
-        <Location location={GEOLOCATION} />
+        <Location location={location} />
+        <section className="main-section">
+          {forecasts ? (
+            Object.keys(forecasts).map(item => {
+              return <WeatherInfo key={item} info={forecasts[item]} />;
+            })
+          ) : (
+            <p>Loading...</p>
+          )}
+        </section>
       </div>
     );
   }

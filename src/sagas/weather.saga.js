@@ -10,9 +10,10 @@ export default function* watcherSaga() {
   yield takeLatest(REQUEST_WEATHER, workerSaga);
 }
 
-export function* workerSaga() {
+function* workerSaga(position) {
   try {
-    const weatherData = yield call(getWeatherAPI);
+    const { meta } = position;
+    const weatherData = yield call(getWeatherAPI, meta);
     yield put(successWeather(weatherData));
   } catch (error) {
     yield put(errorWeather(error));
