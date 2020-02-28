@@ -1,3 +1,9 @@
 .location-name {
+  font-size: 20px;
+  letter-spacing: 1px;
   text-align: center;
+  margin: 0;
+}
+.location-name > span {
+  font-weight: bold;
 }

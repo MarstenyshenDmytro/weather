@@ -1,8 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
+import { ContextApp } from "../../store/context";
 import "./location.scss";
 
-export default function Location(props) {
-  return props.location !== undefined ? (
-    <h2 className="location-name">{`Current location: ${props.location.city}`}</h2>
-  ) : null;
-}
+const Location = props => {
+  const { state } = useContext(ContextApp);
+  const { city } = state.data.location;
+
+  if (!city) {
+    return null;
+  }
+  return (
+    <p className="location-name">
+      Current location: <span>{city}</span>
+    </p>
+  );
+};
+
+export default Location;

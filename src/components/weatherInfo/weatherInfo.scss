@@ -1,9 +1,19 @@
 .weather-card {
-  border: 1px solid black;
+  border: 1px solid rgba(0, 0, 0, 0.1);
   margin: 2px;
   width: 150px;
   min-height: 210px;
 }
-.weather-card > p {
+.weather-card:hover {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+.day-name {
   margin: 10px 7px;
+  font-size: 40px;
+}
+
+.temperature {
+  margin: 50px 7px;
+  font-size: 30px;
 }

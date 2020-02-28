@@ -3,7 +3,7 @@ export const SUCCESS_WEATHER = "SUCCESS_WEATHER";
 export const ERROR_WEATHER = "ERROR_WEATHER";
 
 export function requestWeather(position) {
-  return { type: REQUEST_WEATHER, meta: position };
+  return { type: REQUEST_WEATHER, payload: position };
 }
 
 export function successWeather(data) {
@@ -13,4 +13,9 @@ export function successWeather(data) {
   };
 }
 
-export function errorWeather() {}
+export function errorWeather(error) {
+  return {
+    type: ERROR_WEATHER,
+    payload: error
+  };
+}

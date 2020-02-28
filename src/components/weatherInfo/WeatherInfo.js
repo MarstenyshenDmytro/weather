@@ -1,24 +1,20 @@
-import React from "react";
-import { DateTime } from "luxon";
-import conditionCode from "../../api/conditionCodes";
+import React, { useContext } from "react";
+import { convertDate, getCurrentDate } from "../../utils/convertDate";
+import { ContextApp } from "../../store/context";
 import "./weatherInfo.scss";
 
-function getDate(date) {
-  //console.log(new Date().setTime(date));
-  return DateTime.fromSeconds(date).toFormat("yyyy LLL dd");
-}
-
 const WeatherInfo = props => {
-  //console.log(props);
-  const currentDate = DateTime.local().toFormat("yyyy LLL dd");
-  const { day, date, low, high, text, code } = props.info;
+  const { state } = useContext(ContextApp);
+  const currentDate = getCurrentDate();
+  const { click, id } = props;
+  const { day, date, low, high } = state.data.forecasts[id];
+
   return (
-    <div className="weather-card">
-      <p>{getDate(date) === currentDate ? "Today" : day}</p>
-      <p>{`Date: ${getDate(date)}`}</p>
-      <p>{`Min temperature: ${low}`}</p>
-      <p>{`Max temperature: ${high}`}</p>
-      <p>{`Weather: ${text}, datails: ${conditionCode(code)}`}</p>
+    <div className="weather-card" onClick={click} data-id={id}>
+      <p className="day-name">
+        {convertDate(date) === currentDate ? "Today" : day}
+      </p>
+      <p className="temperature">{`${high}°  ${low}°`}</p>
     </div>
   );
 };

@@ -1,0 +1,36 @@
+.button-close-style {
+  min-width: 15px;
+  min-height: 20px;
+  border-radius: 10px;
+  border: none;
+  background-color: white;
+  margin-top: 2px;
+  margin-right: 2px;
+  float: right;
+}
+
+.button-close-style:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.button-setting {
+  min-width: 50px;
+  min-height: 30px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: white;
+  float: right;
+}
+.button-setting:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.button-submit {
+  margin-left: 5px;
+  min-width: 50px;
+  min-height: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: white;
+}
+.button-submit:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
