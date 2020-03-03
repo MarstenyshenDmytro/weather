@@ -1,7 +1,9 @@
 import React, { useContext } from "react";
+
 import { convertDate, changeDateView } from "../../utils/convertDate";
 import conditionCode from "../../utils/conditionCodes";
 import { ContextApp } from "../../store/context";
+
 import "./detailsWeather.scss";
 
 const DetailsWeather = props => {

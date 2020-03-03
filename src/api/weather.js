@@ -1,12 +1,11 @@
 import client from "./client";
-import { getCookie } from "./cookie";
 
-const getWeatherAPI = location =>
+const getWeatherAPI = (location, temperature) =>
   client("GET", {
     lat: location.coords.latitude,
     lon: location.coords.longitude,
     format: "json",
-    u: getCookie("t") || "c"
+    u: temperature
   })
     .get()
     .then(r => r.data);

@@ -1,21 +1,26 @@
-import React, { useState } from "react";
-import "./settingPage.scss";
-import SelectForm from "../../components/SelectForm/SelectForm";
+import React, { useState, useContext } from "react";
 import { useHistory } from "react-router";
-import { getCookie, setCookie } from "../../api/cookie";
+
+import { ContextApp } from "../../store/context";
+import SelectForm from "../../components/SelectForm/SelectForm";
+import { changeTemperature } from "../../actions/weather";
+
+import "./settingPage.scss";
 
 const SettingPage = props => {
   const history = useHistory();
-  const [temp, setTemp] = useState(getCookie("t"));
+  const { state, dispatch } = useContext(ContextApp);
+  const { temperature } = state;
+  const [currentTemperature, setCurrentTemperature] = useState(temperature);
 
   const handleChange = e => {
     const { value } = e.target;
-    setTemp(value);
+    setCurrentTemperature(value);
   };
 
   const handleClick = e => {
     e.preventDefault();
-    setCookie("t", temp);
+    dispatch(changeTemperature(currentTemperature));
     history.push("/");
   };
 
@@ -24,7 +29,7 @@ const SettingPage = props => {
       <SelectForm
         handleClick={handleClick}
         handleChange={handleChange}
-        t={temp}
+        temperature={currentTemperature}
       />
     </div>
   );

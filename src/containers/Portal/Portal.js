@@ -9,7 +9,7 @@ const Portal = props => {
     return function close() {
       el.remove();
     };
-  }, []);
+  }, [el]);
 
   return ReactDOM.createPortal(props.children, el);
 };

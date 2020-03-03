@@ -1,9 +1,11 @@
 import React, { useReducer } from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+
 import { initialState, weatherReducer } from "../reducers/reducerContext";
 import { ContextApp } from "../store/context";
 import MainPage from "./MainPage/MainPage";
 import SettingPage from "./SettingPage/SettingPage";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+
 import "./app.scss";
 
 const App = props => {

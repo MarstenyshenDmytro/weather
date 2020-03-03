@@ -1,14 +1,16 @@
 import {
   REQUEST_WEATHER,
   SUCCESS_WEATHER,
-  ERROR_WEATHER
+  ERROR_WEATHER,
+  CHANGE_TEMPERATURE
 } from "../actions/weather";
 
 export const initialState = {
   loading: true,
   error: null,
   data: [],
-  position: null
+  position: null,
+  temperature: "c"
 };
 
 export const weatherReducer = (state, action) => {
@@ -19,6 +21,8 @@ export const weatherReducer = (state, action) => {
       return { ...state, loading: false, data: action.payload };
     case ERROR_WEATHER:
       return { ...state, loading: false, error: action.payload };
+    case CHANGE_TEMPERATURE:
+      return { ...state, temperature: action.payload };
     default:
       return state;
   }

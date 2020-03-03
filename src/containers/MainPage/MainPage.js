@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useContext } from "react";
-import WeatherInfo from "../../components/WeatherInfo/WeatherInfo";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 import { useHistory } from "react-router";
+
+import WeatherInfo from "../../components/WeatherInfo/WeatherInfo";
 import ModalWindow from "../ModalWindow/ModalWindow";
 import Header from "../../components/Header/Header";
 import Portal from "../Portal/Portal";
@@ -11,6 +12,7 @@ import {
   successWeather,
   errorWeather
 } from "../../actions/weather";
+
 import "./mainPage.scss";
 
 const MainPage = props => {
@@ -20,6 +22,23 @@ const MainPage = props => {
   const [target, setTarget] = useState(null);
   const history = useHistory();
 
+  const permisionSucces = useCallback(
+    async position => {
+      setPermision(true);
+      dispatch(requestWeather);
+      try {
+        const result = await getWeatherAPI(position, state.temperature);
+        dispatch(successWeather(result));
+      } catch (error) {
+        dispatch(errorWeather(error));
+      }
+    },
+    [dispatch, state.temperature]
+  );
+
+  const permisionDenied = () => {
+    setPermision(false);
+  };
   useEffect(() => {
     const { geolocation } = navigator;
     if (!geolocation) {
@@ -27,30 +46,13 @@ const MainPage = props => {
     } else {
       geolocation.getCurrentPosition(permisionSucces, permisionDenied);
     }
-  }, []);
-
-  const permisionSucces = async position => {
-    setPermision(true);
-    dispatch(requestWeather);
-    try {
-      const result = await getWeatherAPI(position);
-      dispatch(successWeather(result));
-    } catch (error) {
-      dispatch(errorWeather(error));
-    }
-  };
-
-  const permisionDenied = () => {
-    setPermision(false);
-  };
+  }, [permisionSucces]);
 
   const redirect = () => {
     history.push("/setting");
   };
 
-  const handleClick = e => {
-    const { id } = e.currentTarget.dataset;
-
+  const handleClick = id => {
     setTarget(id);
     setIsOpen(true);
   };
@@ -59,13 +61,16 @@ const MainPage = props => {
     setIsOpen(false);
   };
 
-  const { loading } = state;
-  const { forecasts } = state.data;
+  const {
+    loading,
+    data: { forecasts }
+  } = state;
 
-  if (!permision) {
-    return permision === null ? (
-      <p className="info-p">Waiting for permision...</p>
-    ) : (
+  if (permision === null) {
+    return <p className="info-p">Waiting for permision...</p>;
+  }
+  if (permision === false) {
+    return (
       <p className="info-p">You must to allow to recieve Your geolocation</p>
     );
   }
